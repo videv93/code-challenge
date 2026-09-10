@@ -8,13 +8,13 @@ instructions, and installs independently — there is no root install.
 | # | Problem | Deliverable | Tests |
 |---|---|---|---|
 | 1 | [Three ways to sum to n](./problem1) | 3 JavaScript implementations | 65 |
-| 2 | [Fancy Form](./problem2) | Currency swap app — Vite + React 19 + TS + Tailwind 4 | 95 |
+| 2 | [Fancy Form](./problem2) | Currency swap app — Vite + React 19 + TS + Tailwind 4 | 101 |
 | 3 | [Messy React](./problem3) | 24 findings + refactored component | 29 |
 | 4 | [Three ways to sum to n](./problem4) | 3 TypeScript implementations + complexity analysis | 58 |
 | 5 | [A Crude Server](./problem5) | Express 5 + TypeScript + Prisma CRUD service | 55 |
 | 6 | [Architecture](./problem6) | Live scoreboard module specification + diagrams | — |
 
-**302 tests, all passing.** Every folder runs with `npm install && npm test`.
+**308 tests, all passing.** Every folder runs with `npm install && npm test`.
 
 - **Live demo (Problem 2):** https://s5tech.duelcode.online
 - **Live API (Problem 5):** https://api.duelcode.online/docs
@@ -44,9 +44,10 @@ used). Each fix carries a test that fails against the original behaviour —
 including the performance claim, which is usually left as prose.
 
 **Problem 5** — swap orders, chosen to line up with Problem 2 so the two halves
-describe the same domain. Deployed at https://api.duelcode.online/docs — behind a
-reverse proxy that terminates TLS, with the container bound to loopback only and
-migrating itself on start. Tests run against a real database rather than a mocked
+describe the same domain — and **the swap form submits to it**, so a completed
+swap is a row in this service and the receipt links to the record. Deployed at
+https://api.duelcode.online/docs, behind a reverse proxy that terminates TLS,
+with the container bound to loopback only and migrating itself on start. Tests run against a real database rather than a mocked
 ORM. The OpenAPI document is generated from the same Zod schemas the routes
 validate with, so the docs cannot drift from the implementation.
 

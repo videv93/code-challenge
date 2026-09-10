@@ -8,13 +8,13 @@ instructions, and installs independently — there is no root install.
 | # | Problem | Deliverable | Tests |
 |---|---|---|---|
 | 1 | [Three ways to sum to n](./problem1) | 3 JavaScript implementations | 65 |
-| 2 | [Fancy Form](./problem2) | Currency swap app — Vite + React 19 + TS + Tailwind 4 | 101 |
+| 2 | [Fancy Form](./problem2) | Currency swap app — Vite + React 19 + TS + Tailwind 4 | 105 |
 | 3 | [Messy React](./problem3) | 24 findings + refactored component | 29 |
 | 4 | [Three ways to sum to n](./problem4) | 3 TypeScript implementations + complexity analysis | 58 |
 | 5 | [A Crude Server](./problem5) | Express 5 + TypeScript + Prisma CRUD service | 55 |
 | 6 | [Architecture](./problem6) | Live scoreboard module specification + diagrams | — |
 
-**308 tests, all passing.** Every folder runs with `npm install && npm test`.
+**312 tests, all passing.** Every folder runs with `npm install && npm test`.
 
 - **Live demo (Problem 2):** https://s5tech.duelcode.online
 - **Live API (Problem 5):** https://api.duelcode.online/docs

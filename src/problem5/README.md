@@ -1,6 +1,10 @@
 # Problem 5 — A Crude Server
 
 A CRUD service over **swap orders**, built with **Express 5 + TypeScript + Prisma**.
+
+**Live: [api.duelcode.online](https://api.duelcode.online/docs)** — interactive API
+reference at `/docs`, or try
+[`/api/v1/swap-orders`](https://api.duelcode.online/api/v1/swap-orders).
 The resource lines up with Problem 2's currency-swap form, so the two halves of
 this submission describe the same domain.
 
@@ -57,7 +61,26 @@ model uses no SQLite-specific features, so moving to Postgres is two changes:
 2. `.env` → `DATABASE_URL="postgresql://swap:swap@localhost:5432/swap_orders"`
 
 then `npm i @prisma/adapter-pg`, swap the adapter in `src/db/client.ts`, and run
-`npm run db:migrate`. A `docker-compose.yml` is included to bring up the database.
+`npm run db:migrate`.
+
+### Running it in a container
+
+```bash
+docker compose up --build -d      # http://localhost:3200
+```
+
+The image is multi-stage: the runtime carries no compiler and no dev
+dependencies. It **migrates itself on start** (`prisma migrate deploy`, which is
+idempotent, so restarts are safe), runs as the non-root `node` user, and keeps
+the SQLite file on a named volume so a redeploy does not take the data with it.
+The port binds to `127.0.0.1` only — the way in is through a reverse proxy.
+
+Two things worth knowing about the image. It is built on `node:22-slim` rather
+than Alpine because `better-sqlite3` is a native addon with no musl prebuilds,
+and `npm rebuild better-sqlite3` is called explicitly because the install runs
+with `--ignore-scripts` (otherwise Prisma's postinstall tries to generate into a
+source tree the runtime stage does not have). Skip either and the container
+starts, then fails on its first query.
 
 ---
 
@@ -118,6 +141,28 @@ transition · `422` validation · `429` rate limited · `500` internal (message
 suppressed in production so exception text cannot leak table names or paths).
 
 ---
+
+## Deployment
+
+Running on a VPS behind Caddy, which terminates TLS and reverse-proxies to the
+container:
+
+```
+Cloudflare DNS → Caddy (:443, automatic Let's Encrypt) → 127.0.0.1:3200 → container :3000
+```
+
+```bash
+docker compose up -d --build
+```
+
+The container binds to **loopback only**, so it cannot be reached directly on the
+public interface — the reverse proxy is the sole way in. It migrates itself on
+start, so a fresh volume becomes a working database with no extra step, and the
+SQLite file lives on a named volume so a redeploy does not take the data with it.
+`restart: unless-stopped` brings it back after a reboot.
+
+`CORS_ORIGIN` is set to the swap app's origin rather than left at `*`, since the
+two are on different hosts.
 
 ## Design decisions
 

@@ -17,6 +17,7 @@ instructions, and installs independently — there is no root install.
 **302 tests, all passing.** Every folder runs with `npm install && npm test`.
 
 - **Live demo (Problem 2):** https://s5tech.duelcode.online
+- **Live API (Problem 5):** https://api.duelcode.online/docs
 - **Repository with CI:** https://github.com/videv93/s5tech-code-challenge
 
 ---
@@ -43,7 +44,9 @@ used). Each fix carries a test that fails against the original behaviour —
 including the performance claim, which is usually left as prose.
 
 **Problem 5** — swap orders, chosen to line up with Problem 2 so the two halves
-describe the same domain. Tests run against a real database rather than a mocked
+describe the same domain. Deployed at https://api.duelcode.online/docs — behind a
+reverse proxy that terminates TLS, with the container bound to loopback only and
+migrating itself on start. Tests run against a real database rather than a mocked
 ORM. The OpenAPI document is generated from the same Zod schemas the routes
 validate with, so the docs cannot drift from the implementation.
 
